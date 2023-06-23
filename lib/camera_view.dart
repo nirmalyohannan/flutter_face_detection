@@ -1,7 +1,9 @@
 import 'dart:developer';
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_face_detection/image_screen.dart';
 import 'package:flutter_face_detection/main.dart';
 import 'package:flutter_face_detection/util/face_detector_painter.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
@@ -94,10 +96,15 @@ class _CameraViewState extends State<CameraView> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: List.generate(
                     imageList.length,
-                    (index) => Image.memory(
-                          imageList[index],
-                          width: 70,
-                          height: 70,
+                    (index) => InkWell(
+                          onTap: () => Navigator.of(context).push(CupertinoPageRoute(
+                            builder: (context) => ImageScreen(image: imageList[index]),
+                          )),
+                          child: Image.memory(
+                            imageList[index],
+                            width: 70,
+                            height: 70,
+                          ),
                         )),
               ),
             ),
