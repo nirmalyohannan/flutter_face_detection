@@ -113,7 +113,9 @@ class _CameraViewState extends State<CameraView> {
             onPressed: () async {
               try {
                 await _controller!.stopImageStream();
+
                 XFile? xFile = await _controller!.takePicture();
+
                 await _controller!.startImageStream(_processCameraImage);
                 setState(() async {
                   imageList.add(await xFile.readAsBytes());
@@ -138,7 +140,7 @@ class _CameraViewState extends State<CameraView> {
     final camera = cameras[_cameraIndex];
     _controller = CameraController(
       camera,
-      ResolutionPreset.high,
+      ResolutionPreset.low,
       enableAudio: false,
     );
     _controller?.initialize().then((_) {
@@ -158,6 +160,7 @@ class _CameraViewState extends State<CameraView> {
   }
 
   Future _processCameraImage(final CameraImage image) async {
+    // log("${image.width}x${image.height}");
     final WriteBuffer allBytes = WriteBuffer();
     for (final Plane plane in image.planes) {
       allBytes.putUint8List(plane.bytes);
